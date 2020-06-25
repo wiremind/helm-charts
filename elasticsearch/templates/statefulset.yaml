@@ -26,6 +26,7 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: {{ template "elasticsearch.uname" . }}
+    {{- if .Values.persistence.labels.enabled }}
       labels:
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
@@ -34,6 +35,7 @@ spec:
         {{- range $key, $value := .Values.labels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
+    {{- end }}
     {{- with .Values.persistence.annotations  }}
       annotations:
 {{ toYaml . | indent 8 }}
